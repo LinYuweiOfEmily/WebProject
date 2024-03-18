@@ -24,49 +24,93 @@
             <span style="--i:5">Z</span>
             <span style="--i:6">H</span>
         </div>
-        <!-- 登录注册选择板块 -->
-        <div class="top">
-            <span class="off">SIGN IN</span>
-            <div class="button" id="turn">
-                <div class="ball" id="clball"></div>
+        <div id="login">
+
+            <div class="top">
+                <span :class="{ 'off': index === 0, 'on': index === 1 }" @click="changeTab('signIn')">SIGN IN</span>
+                <div class="button" id="turn" @click="toggleTab" :style="{ 'background': buttonBackground, 'box-shadow': buttonBoxShadow }">
+                    <div class="ball" :style="{ 'left': ballLeft, 'background-color': ballBackgroundColor }" id="clball"></div>
+                </div>
+                <span :class="{ 'off': index === 1, 'on': index === 0 }" @click="changeTab('signUp')">SIGN UP</span>
             </div>
-            <span class="on">SIGN UP</span>
+            <!-- 登录和注册表单 -->
+            <form class="xtx-form" action="">
+                <div class="bottom" :style="{ 'transform': bottomTransform }">
+                    <!-- 登录窗口 -->
+                    <div class="signIn" v-if="index === 0">
+                        <h2>登录</h2>
+                        <div data-prop="username_login" class="xtx-form-item">
+                            <input name="username_login" type="text" placeholder="请输入用户名" v-model="signInForm.username" @blur="usernameMsg">
+                            <span class="msg" v-show="showUsernameMsg">{{ usernameMessage }}</span>
+                        </div>
+                        <div data-prop="password_login" class="xtx-form-item">
+                            <input name="password_login" type="password" placeholder="请输入密码" v-model="signInForm.password" @blur="passwordMsg">
+                            <span class="msg" v-show="showPasswordMsg">{{passwordMessage}}</span>
+                        </div>
+                        <button @click.prevent="signIn">确认</button>
+                    </div>
+                    <!-- 注册窗口 -->
+                    <div class="signUp" v-if="index === 1">
+                        <h2>注册</h2>
+                        <div data-prop="username_register" class="xtx-form-item">
+                            <input name="username_register" type="text" placeholder="请设置用户名" v-model="signUpForm.username"@blur="usernameMsg1">
+                            <span class="msg" v-show="showUsernameMsg">{{ usernameMessage }}</span>
+                        </div>
+                        <div data-prop="password_register" class="xtx-form-item">
+                            <input name="password_register" type="password" placeholder="请设置密码" v-model="signUpForm.password" @blur="passwordMsg1">
+                            <span class="msg" v-show="showPasswordMsg">{{passwordMessage}}</span>
+                        </div>
+                        <div data-prop="confirm_register" class="xtx-form-item">
+                            <input name="confirm_register" type="password" placeholder="再次确认密码" v-model="signUpForm.confirmPassword" @blur="isEqual">
+                            <span class="msg" v-show="showConfirmMsg">{{confirmMessage}}</span>
+                        </div>
+                        <button @click.prevent="signUp">确认</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <!-- 登录和注册表单 -->
-        <form class="xtx-form" action="">
-            <div class="bottom">
-                <!-- 登录窗口 -->
-                <div class="signIn">
-                    <h2>登录</h2>
-                    <div data-prop="username_login" class="xtx-form-item">
-                        <input name="username_login" type="text" placeholder="请输入用户名" id="inUn">
-                        <span class="msg"></span>
-                    </div>
-                    <div data-prop="password_login" class="xtx-form-item">
-                        <input name="password_login" type="password" placeholder="请输入密码" id="inPw">
-                        <span class="msg"></span>
-                    </div>
-                    <button>确认</button>
-                </div>
-                <!-- 注册窗口 -->
-                <div class="signUp">
-                    <h2>注册</h2>
-                    <div data-prop="username_register" class="xtx-form-item">
-                        <input name="username_register" type="text" placeholder="请设置用户名" id="inUn">
-                        <span class="msg"></span>
-                    </div>
-                    <div data-prop="password_register" class="xtx-form-item">
-                        <input name="password_register" type="password" placeholder="请设置密码" id="upPw">
-                        <span class="msg"></span>
-                    </div>
-                    <div data-prop="confirm_register" class="xtx-form-item">
-                        <input name="confirm_register" type="password" placeholder="再次确认密码" id="upCfPw">
-                        <span class="msg"></span>
-                    </div>
-                    <button>确认</button>
-                </div>
-            </div>
-        </form>
+<!--        <div class="top">-->
+<!--            <span class="off">SIGN IN</span>-->
+<!--            <div class="button" id="turn">-->
+<!--                <div class="ball" id="clball"></div>-->
+<!--            </div>-->
+<!--            <span class="on">SIGN UP</span>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; 登录和注册表单 &ndash;&gt;-->
+<!--        <form class="xtx-form" action="">-->
+<!--            <div class="bottom">-->
+<!--                &lt;!&ndash; 登录窗口 &ndash;&gt;-->
+<!--                <div class="signIn">-->
+<!--                    <h2>登录</h2>-->
+<!--                    <div data-prop="username_login" class="xtx-form-item">-->
+<!--                        <input name="username_login" type="text" placeholder="请输入用户名" id="inUn">-->
+<!--                        <span class="msg"></span>-->
+<!--                    </div>-->
+<!--                    <div data-prop="password_login" class="xtx-form-item">-->
+<!--                        <input name="password_login" type="password" placeholder="请输入密码" id="inPw">-->
+<!--                        <span class="msg"></span>-->
+<!--                    </div>-->
+<!--                    <button>确认</button>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; 注册窗口 &ndash;&gt;-->
+<!--                <div class="signUp">-->
+<!--                    <h2>注册</h2>-->
+<!--                    <div data-prop="username_register" class="xtx-form-item">-->
+<!--                        <input name="username_register" type="text" placeholder="请设置用户名" id="upUn">-->
+<!--                        <span class="msg"></span>-->
+<!--                    </div>-->
+<!--                    <div data-prop="password_register" class="xtx-form-item">-->
+<!--                        <input name="password_register" type="password" placeholder="请设置密码" id="upPw">-->
+<!--                        <span class="msg"></span>-->
+<!--                    </div>-->
+<!--                    <div data-prop="confirm_register" class="xtx-form-item">-->
+<!--                        <input name="confirm_register" type="password" placeholder="再次确认密码" id="upCfPw">-->
+<!--                        <span class="msg"></span>-->
+<!--                    </div>-->
+<!--                    <button>确认</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
     </div>
     <!-- 背景山脉 -->
     <div class="mountain1">
@@ -77,6 +121,8 @@
     <div class="bear"></div>
 
     <!-- js代码引入 -->
+    <script src="javascript/vue.js"></script>
+    <script src="javascript/axios-0.18.0.js"></script>
     <script src="./javascript/login.js">
     </script>
 </body>
